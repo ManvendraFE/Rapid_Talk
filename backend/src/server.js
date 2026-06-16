@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import authRoutes from './routes/auth.route.js';
 import messageRoutes from './routes/message.route.js';
 import { connectDB } from './lib/db.js';
+import { ENV } from './lib/env.js';
 
 const app = express();
 
@@ -14,10 +15,10 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.join(__dirname, "../.env") });
 
-console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("NODE_ENV:", ENV.NODE_ENV);
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = ENV.PORT || 3000;
 
 app.use(express.json()); // To parse JSON bodies res.body
 
@@ -29,7 +30,7 @@ app.use("/api/messages", messageRoutes);
 
 console.log("Serving frontend from:", path.join(__dirname, "../../frontend/dist"));
 
-if(process.env.NODE_ENV === "production"){
+if(ENV.NODE_ENV === "production"){
   app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 
   app.get("/{*splat}", (req, res) => {

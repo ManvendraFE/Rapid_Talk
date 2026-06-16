@@ -2,7 +2,11 @@ import jwt from "jsonwebtoken"
 
 export const generateToken = (userId, res)=>{
   //  here we create the ID to check which user is which , and the user is Authenticated or not
-  const token = jwt.sign({userId}, process.env.JWT_SECRET, {expiresIn: "7d"});
+  const {JWT_SECRET} = process.env;
+  if(!JWT_SECRET){
+    throw new Error("JWT_SECRET is not defined in environment variables");
+  }
+  const token = jwt.sign({userId}, JWT_SECRET, {expiresIn: "7d"});
 
   res.cookie("jwt", token, {
     maxAge: 7*24*60*60*1000, // 7 days in milliseconds
@@ -12,5 +16,5 @@ export const generateToken = (userId, res)=>{
   })
 
   return token;
-    
+     
 }
