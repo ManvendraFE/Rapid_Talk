@@ -2,8 +2,8 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../lib/utils.js";
 import { sendWelcomeEmail } from "../emails/emailHandlers.js";
-
 import { ENV } from "../lib/env.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export const signup =  async (req, res)=>{
  const {fullName, email, password} = req.body
@@ -66,7 +66,8 @@ export const signup =  async (req, res)=>{
     console.log("Error in signup:", err);
     return res.status(500).json({message: "Internal server error"});  
  }
-}
+} 
+// login controller: user login karne ke liye, email aur password ke through, aur agar successful login hota hai to token generate karke cookie me set karna hai, taki user authenticated rahe, aur response me user ka data bhejna hai, taki frontend me user ka data show kar sake
 
 export const login = async(req, res)=> {
    const {email, password} = req.body;
@@ -105,3 +106,24 @@ export const logout = (_, res)=>{
    res.cookie("jwt","", {maxAge:0})
    res.status(200).json({message: "Logged Out successful "})
 };
+
+export const updateProfile = async(req, res) => {
+   try{
+      const { profilePic } = req.body;
+      if(!profilePic){
+         return res.status(400).json({message: "Profile picture is required"});
+      }
+      const userId = req.user._id; 
+
+     const uploadResponse = await cloudinary.uploader.upload(profilePic)// updating profile picture in cloudinary, profilePic is base64 string sent from frontend, but we also want to upload it to our database 
+     const updatedUser = await User.findByUserIdAndUpdate(
+      userId, 
+      {profilePic: uploadResponse.secure_url}, 
+      {new: true}); // database me user ka profile picture update karna hai, aur new: true ka matlab hai ki updated user object return karna hai
+      res.status(200).json(updateUser)
+   }
+   catch(error){
+     console.log("Error in update profile:", error);
+     res.status(500).json({message: "Internal server error"});
+   }
+}

@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import path from "path";
 import { fileURLToPath } from 'url'; 
-
+import cookiesParser from 'cookie-parser';
 import authRoutes from './routes/auth.route.js';
 import messageRoutes from './routes/message.route.js';
 import { connectDB } from './lib/db.js';
@@ -21,6 +21,7 @@ console.log("NODE_ENV:", ENV.NODE_ENV);
 const PORT = ENV.PORT || 3000;
 
 app.use(express.json()); // To parse JSON bodies res.body
+app.use(cookiesParser()); // To parse cookies from incoming requests, so that we can access them via req.cookies
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
