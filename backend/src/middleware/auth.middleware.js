@@ -8,8 +8,8 @@ export const protectedRoute = async (req, res, next) => {
     const token = req.cookies.jwt; // req object se token extract karna hai, assuming token is stored in cookies with name 'jwt '
     if(!token){
       return res.status(401).json({message: "Unauthorized - no token provided"}); 
-      const decoded = jwt.verify(token,ENV.JWT_SECRET)// token verify karna hai, agar token valid hai to decoded payload milega, jisme user id hogi
     }
+    const decoded = jwt.verify(token,ENV.JWT_SECRET)// token verify karna hai, agar token valid hai to decoded payload milega, jisme user id hogi
     if(!decoded){
       return res.status(401).json({message: "Unauthorized - invalid token"}); // token h but invalid h 
     }
