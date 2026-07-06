@@ -5,6 +5,7 @@ export const useAuthStore = create((set)=>({
    authUser: null, // if user is authenticated we can set user object here
    isCheckingAuth: true,
    isSigningUp: false,
+   isLoggingIn: false,
 
    checkAuth: async () => {
     try {
@@ -14,7 +15,7 @@ export const useAuthStore = create((set)=>({
       console.log("Error in authCheck:", error);
       set({authUser:null})
     }finally{
-      set({isCheckingAuth: false});
+      set({isCheckingAuth: false});lll
     }
    },
 
@@ -31,5 +32,31 @@ export const useAuthStore = create((set)=>({
     }finally {
       set({ isSigningUp: false})
     }
-   } 
+   } ,
+   login: async(data)=>{  // data is the formData from LoginPage.jsx 
+    set({ isLoggingIn: true})
+    try {
+     const res = await axiosInstance.post("/auth/login", data);
+
+     set({authUser: res.data});
+
+     toast.success("Logged in successfully")
+    } catch (error) {
+      toast.error(error.response.data.message)// we can access to the error in Axios
+    }finally {
+      set({ isLoggingIn: false})
+    }
+   } ,
+
+   logout: async()=>{
+    try{
+      await axiosInstance.post("/auth/logout");
+      set({authUser:null})
+      toast.success("Logged out successfully")
+       
+    }catch(error){
+      toast.error("Error logging out");
+      console.log("Error logging out:", error)
+    }
+   }
 })) 
