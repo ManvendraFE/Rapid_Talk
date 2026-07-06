@@ -17,7 +17,7 @@ function SignUpPage(){
   }
 }
 //
-  return <div className="w-full flex items-center justify-center p-4 bg-slate-900">
+  return (<div className="w-full flex items-center justify-center p-4 bg-slate-900">
     <div className="relative w-full max-w-6xl md:h-[800px] h-[650px]">
       <BoarderAnimatedContainer>
       <div className="w-full flex flex-col md:flex-row">
@@ -93,8 +93,8 @@ function SignUpPage(){
                 <div className = "hidden md:w-1/2 md:flex items-center justify-center p-6 bg-gradient-to-slate-800/200 to-transparent">
                 <div>
                   <img
-                  src="/signup.png"
-                  alt="Sign Up Illustration"
+                  src="/login.png"
+                  alt="Login Illustration"
                   className="w-full h-auto object-contain"
                   />
                   <div className="mt-6 text-center">
@@ -112,6 +112,6 @@ function SignUpPage(){
      </BoarderAnimatedContainer>
     </div>
     
-  </div>   
+  </div> )  
 }
 export default SignUpPage;
