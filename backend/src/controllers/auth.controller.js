@@ -116,11 +116,11 @@ export const updateProfile = async(req, res) => {
       const userId = req.user._id; 
 
      const uploadResponse = await cloudinary.uploader.upload(profilePic)// updating profile picture in cloudinary, profilePic is base64 string sent from frontend, but we also want to upload it to our database 
-     const updatedUser = await User.findByUserIdAndUpdate(
-      userId, 
+     const updatedUser = await User.findByIdAndUpdate(userId,
       {profilePic: uploadResponse.secure_url}, 
-      {new: true}); // database me user ka profile picture update karna hai, aur new: true ka matlab hai ki updated user object return karna hai
-      res.status(200).json(updateUser)
+      {new: true}).select("-password"); // database me user ka profile picture update karna hai, aur new: true ka matlab hai ki updated user object return karna hai
+      res.status(200).json(updatedUser)
+
    }
    catch(error){
      console.log("Error in update profile:", error);
