@@ -11,6 +11,9 @@ import { ENV } from './lib/env.js';
 
 const app = express();
 
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -30,6 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
+
 
 console.log("Serving frontend from:", path.join(__dirname, "../../frontend/dist"));
 
