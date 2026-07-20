@@ -28,7 +28,12 @@ function ChatContainer() {
               <div className={`chat-bubble relative ${msg.senderId === authUser._id ? "bg-cyan-600 text-white" : "bg-slate-800 text-slate-200"}`}>
                 {msg.image && (<img src={msg.image} alt="Shared" className="rounded-lg h-48 object-cover"/>)}
                 {msg.text && <p className="mt-2">{msg.text}</p>}
-                <p className="text-xs mt-1 opacity-75 flex items-ceenter gap-1">{new Date(msg.createdAt).toISOString().slice(11, 16)}</p>
+                 <p className="text-xs mt-1 opacity-75 flex items-center gap-1">
+                    {new Date(msg.createdAt).toLocaleTimeString(undefined, {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
                 </div>   {/*Agr sender hum h to chat bubble m wrap hogi && agr msg h to msg show hoga , agr image h to image show hoga agr dono show hoga */}
 
             </div>
