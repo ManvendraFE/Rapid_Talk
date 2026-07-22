@@ -3,7 +3,7 @@ import {XIcon} from "lucide-react";
 import {useChatStore} from "../store/useChatStore"
 import { useEffect } from 'react';
 function ChatHeader(){
-  const {selectedUser, setSelectedUser} = useChatStore();
+  const {selectedUser, setSelectedUser} = useChatStore(); 
 
   useEffect(()=> {
    // Jab Esc key press krenge to current user hatt jayega 
