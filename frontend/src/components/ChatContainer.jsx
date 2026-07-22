@@ -1,7 +1,7 @@
 import React from 'react'
 import {useChatStore} from "../store/useChatStore"
 import {useAuthStore} from "../store/useAuthStore"
-import { useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import ChatHeader from "./ChatHeader";
 import NoChatHistoryPlaceholder from './NoChatHistoryPlaceholder';
 import MessageInput from './MessageInput';
@@ -10,11 +10,18 @@ import MessagesLoadingSkeleton from './MessagesLoadingSkeleton';
 function ChatContainer() {
   const {selectedUser, getMessagesByUserId, messages, isMessagesLoading} = useChatStore()
   const {authUser} = useAuthStore();
+  const messageEndRef = useRef(null)
 
 
   useEffect(() => {getMessagesByUserId(selectedUser._id)},[
     selectedUser, getMessagesByUserId
-  ])
+  ]);
+
+    useEffect(()=>{
+      if(messageEndRef.current){
+        messageEndRef.current.scrollIntoView({behavior: "smooth"})
+      }
+    }, [messages]);
   return (
     <>
      <ChatHeader/> 
@@ -38,6 +45,8 @@ function ChatContainer() {
 
             </div>
           ))}
+          {/* Scroll Target  */}
+          <div ref={messageEndRef}/>
         </div>  // Agr chat m kuch msg h to msg dikhe otherwise NoChatHistoryPlaceholder component render ho jaye
       ): isMessagesLoading ? <MessagesLoadingSkeleton/>:(
         <NoChatHistoryPlaceholder name={selectedUser.fullName}/>
